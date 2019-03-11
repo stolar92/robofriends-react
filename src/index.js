@@ -3,12 +3,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 import 'tachyons'; // po zainstalowaniu zaimportowano tachyons cos w stylu bootstrapa
-import { robots } from './robots'; // w pliku robots zastosowano sam export (czyli plik moze miec wiecj niz jeden export) bez default ( default tylko jeden export) dlatego dano to w klamrach
-import CardList from './CardList';
+import App from './App';
 
-ReactDOM.render(
-                <CardList robots={robots}/>
-, document.getElementById('root'));
+ReactDOM.render(<App />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
