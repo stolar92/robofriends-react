@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import CardList from './CardList';
 import SearchBox from './SearchBox';
-import { robots } from './robots'; // w pliku robots zastosowano sam export (czyli plik moze miec wiecj niz jeden export) bez default ( default tylko jeden export) dlatego dano to w klamrach
 import './App.css'
 
 
@@ -9,10 +8,16 @@ class App extends Component {  // stworzono component app oparty na klasie (chyb
     constructor() { // zeby ustawic state zawsze musi byc constructor i nizej super
         super()
         this.state = { 
-            robots: robots,
+            robots: [],
             searchfield: ''
         }
     }
+
+    componentDidMount() {
+        fetch('https://jsonplaceholder.typicode.com/users') // przechwytuje json ze strony i uaktalnia state na stronie tej jest example jak uzywac
+        .then(response => response.json())
+        .then(json => this.setState({ robots: json }));
+     }
     
     onSearchChange = (event) =>{
         this.setState({ searchfield: event.target.value }) // funkcja ktora ustawia state dla searchfield w tym momencie otrzymuje value wpisywane w inpucie
@@ -21,13 +26,22 @@ class App extends Component {  // stworzono component app oparty na klasie (chyb
         const filteredRobots = this.state.robots.filter( robot =>{ //funkcja ktora ustawia state dla robots, filtruje to po wartosciach ktore sa w pisywane w searchfield 
             return robot.name.toLowerCase().includes(this.state.searchfield.toLowerCase());
         })
-        return(
-            <div className="tc">
-                <h1 className='f1'>RoboFriends</h1>
-                <SearchBox searchChange={this.onSearchChange}/>
-                <CardList robots={filteredRobots}/>
-            </div>
-        );
+        if (this.state.robots.length === 0) { // dodano warunek jezeli dlugosc tablicy 0 wyswietl komunikat o ladowaniu jezeli wiekszy wyswietl komponenty
+            return(
+                <div className="tc">
+                    <h1 className='f1'>Loading robots list</h1>
+                </div>
+            );
+        } else{
+            return(
+                <div className="tc">
+                    <h1 className='f1'>RoboFriends</h1>
+                    <SearchBox searchChange={this.onSearchChange}/>
+                    <CardList robots={filteredRobots}/>
+                </div>
+            );
+        }
+
     } //w komponencie searchBox searchChange przechowuje funkcje onSearchChange po to zeby ja triggerowac
     //CardList przechowuje funkcje filrered robots opisana wyzej
 }
