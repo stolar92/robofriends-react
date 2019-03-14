@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import CardList from './CardList';
-import SearchBox from './SearchBox';
-import Scroll from './Scroll'
+import CardList from '../components/CardList';
+import SearchBox from '../components/SearchBox';
+import Scroll from '../components/Scroll'
 import './App.css'
 
 
@@ -24,10 +24,11 @@ class App extends Component {  // stworzono component app oparty na klasie (chyb
         this.setState({ searchfield: event.target.value }) // funkcja ktora ustawia state dla searchfield w tym momencie otrzymuje value wpisywane w inpucie
     }
     render() {
-        const filteredRobots = this.state.robots.filter( robot =>{ //funkcja ktora ustawia state dla robots, filtruje to po wartosciach ktore sa w pisywane w searchfield 
-            return robot.name.toLowerCase().includes(this.state.searchfield.toLowerCase());
+        const { robots, searchfield} = this.state; // takie zbindowanie zeby nie pisac za kazdym razem this state , wystarczy robots ( robots === this.state.robots)
+        const filteredRobots = robots.filter( robot =>{ //funkcja ktora ustawia state dla robots, filtruje to po wartosciach ktore sa w pisywane w searchfield 
+            return robot.name.toLowerCase().includes(searchfield.toLowerCase());
         })
-        if (this.state.robots.length === 0) { // dodano warunek jezeli dlugosc tablicy 0 wyswietl komunikat o ladowaniu jezeli wiekszy wyswietl komponenty
+        if (robots.length === 0) { // dodano warunek jezeli dlugosc tablicy 0 wyswietl komunikat o ladowaniu jezeli wiekszy wyswietl komponenty
             return(
                 <div className="tc">
                     <h1 className='f1'>Loading robots list</h1>
